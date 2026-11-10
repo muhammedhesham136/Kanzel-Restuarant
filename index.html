@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kanzel — Restaurant & Lounge · Le Lac du Caire</title>
+<meta name="description" content="Kanzel Restaurant & Lounge — lakefront dining, sculpted design and soft textures at Le Lac du Caire, Cairo. Not just a venue, a vision." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --forest:#0c2a1c;
+    --forest-2:#103421;
+    --forest-3:#0a2217;
+    --cream:#f3eee1;
+    --cream-2:#ece4d2;
+    --ink:#0b1f15;
+    --gold:#c8a24f;
+    --gold-soft:#ddc187;
+    --gold-deep:#a37e30;
+    --max:1200px;
+    --ease:cubic-bezier(.22,1,.36,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--forest);color:var(--cream);
+    font-family:'Jost',system-ui,sans-serif;font-weight:300;line-height:1.7;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  h1,h2,h3,.disp{font-family:'Fraunces',Georgia,serif;font-weight:600;line-height:1.02;letter-spacing:-.01em}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  .wrap{width:100%;max-width:var(--max);margin:0 auto;padding:0 clamp(22px,5vw,56px)}
+
+  /* shared bits */
+  .eyebrow{display:inline-flex;align-items:center;gap:.8em;
+    font-size:.72rem;letter-spacing:.34em;text-transform:uppercase;font-weight:500;color:var(--gold)}
+  .eyebrow::before{content:"";width:34px;height:1px;background:var(--gold)}
+  .num{font-family:'Fraunces';font-weight:500;font-style:italic;color:var(--gold);font-size:1.1rem}
+  .btn{display:inline-flex;align-items:center;gap:.6em;font-weight:500;letter-spacing:.14em;
+    text-transform:uppercase;font-size:.76rem;padding:16px 34px;border-radius:2px;cursor:pointer;
+    transition:.4s var(--ease);border:1.5px solid var(--gold);background:var(--gold);color:var(--forest)}
+  .btn:hover{background:var(--gold-soft);border-color:var(--gold-soft);transform:translateY(-2px)}
+  .btn.ghost{background:transparent;color:var(--cream);border-color:rgba(243,238,225,.45)}
+  .btn.ghost:hover{border-color:var(--cream);background:rgba(243,238,225,.06)}
+  .btn.dark{border-color:var(--forest);color:var(--forest);background:transparent}
+  .btn.dark:hover{background:var(--forest);color:var(--cream)}
+
+  /* NAV */
+  header.nav{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;
+    justify-content:space-between;padding:22px clamp(22px,5vw,56px);transition:.5s var(--ease)}
+  header.nav.scrolled{background:rgba(10,34,22,.92);backdrop-filter:blur(12px);padding:14px clamp(22px,5vw,56px);
+    border-bottom:1px solid rgba(200,162,79,.25)}
+  .brand{font-family:'Fraunces';font-weight:600;font-size:1.5rem;letter-spacing:.26em;text-transform:uppercase;padding-left:.26em}
+  .brand b{color:var(--gold);font-weight:600}
+  nav.links{display:flex;gap:32px;align-items:center}
+  nav.links a{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(243,238,225,.72);transition:.3s;font-weight:400}
+  nav.links a:hover{color:var(--gold-soft)}
+  nav.links .btn{color:var(--forest)}
+  .menu-toggle{display:none;background:none;border:0;color:var(--cream);font-size:1.5rem;cursor:pointer}
+
+  /* HERO */
+  .hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:120px 0 70px;overflow:hidden;background:var(--forest)}
+  .hero-bg{position:absolute;inset:0;z-index:0;overflow:hidden}
+  .hero-bg .photo{position:absolute;inset:0;background:url('images/hero-bg.jpg') center 40%/cover no-repeat;
+    transform:scale(1.06);animation:heroZoom 18s ease-out forwards}
+  @keyframes heroZoom{to{transform:scale(1.14)}}
+  .hero-bg .scrim{position:absolute;inset:0;background:
+    radial-gradient(60% 55% at 82% 28%,rgba(200,162,79,.16),transparent 62%),
+    linear-gradient(90deg,rgba(8,26,17,.96) 0%,rgba(8,26,17,.74) 44%,rgba(8,26,17,.42) 100%),
+    linear-gradient(180deg,rgba(8,26,17,.5) 0%,rgba(8,26,17,0) 28%,rgba(10,34,22,.92) 100%),
+    linear-gradient(0deg,rgba(12,42,28,.3),rgba(12,42,28,.3))}
+  .hero .grid{position:relative;z-index:2;display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;width:100%}
+  .hero .eyebrow{opacity:0;transform:translateY(16px);animation:rise .9s var(--ease) .15s forwards}
+  .hero h1{font-size:clamp(4rem,14vw,11rem);font-weight:600;letter-spacing:-.02em;margin:.14em 0 .18em;
+    opacity:0;transform:translateY(26px);animation:rise 1s var(--ease) .3s forwards}
+  .hero h1 em{display:block;font-style:italic;font-weight:400;color:var(--gold-soft);
+    font-size:clamp(1.3rem,3.4vw,2.4rem);letter-spacing:.04em;margin-top:.1em}
+  .hero .lead{max-width:430px;color:rgba(243,238,225,.82);font-size:1.08rem;
+    opacity:0;transform:translateY(20px);animation:rise 1s var(--ease) .5s forwards}
+  .hero .cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px;
+    opacity:0;transform:translateY(20px);animation:rise 1s var(--ease) .68s forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+
+  /* monogram */
+  .monogram{position:relative;aspect-ratio:1;max-width:400px;margin-left:auto;width:100%;
+    display:flex;align-items:center;justify-content:center;
+    opacity:0;animation:fade 1.2s var(--ease) .6s forwards}
+  @keyframes fade{to{opacity:1}}
+  .monogram .ring{position:absolute;border-radius:50%}
+  .monogram .r1{inset:0;border:1.5px solid rgba(200,162,79,.55)}
+  .monogram .r2{inset:9%;border:1px solid rgba(243,238,225,.18)}
+  .monogram .r3{inset:4%;border:1px dashed rgba(200,162,79,.4);animation:spin 40s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .monogram .dot{position:absolute;width:9px;height:9px;border-radius:50%;background:var(--gold);top:50%;left:-4px;box-shadow:0 0 14px var(--gold)}
+  .lockup{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 12%}
+  .lockup .mono{font-family:'Fraunces';font-weight:500;font-size:clamp(2.6rem,7vw,4.2rem);line-height:.9;color:var(--cream);
+    letter-spacing:.04em;position:relative}
+  .lockup .mono::before,.lockup .mono::after{content:"";position:absolute;top:50%;width:clamp(16px,4vw,26px);height:1px;background:var(--gold)}
+  .lockup .mono::before{right:calc(100% + 10px)}
+  .lockup .mono::after{left:calc(100% + 10px)}
+  .lockup .wordmark{font-family:'Fraunces';font-weight:500;color:var(--gold-soft);
+    font-size:clamp(1.5rem,4.4vw,2.5rem);letter-spacing:.24em;margin:.5em 0 .34em;padding-left:.24em}
+  .lockup .rule{width:46%;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin-bottom:.5em}
+  .lockup .sub{font-family:'Jost';font-weight:400;font-size:clamp(.5rem,1.5vw,.64rem);
+    letter-spacing:.4em;text-transform:uppercase;color:rgba(243,238,225,.72);padding-left:.4em}
+
+  /* GOLD STRIP */
+  .strip{background:var(--gold);overflow:hidden;white-space:nowrap;border-top:1px solid var(--gold-deep);border-bottom:1px solid var(--gold-deep)}
+  .strip .track{display:inline-flex;gap:50px;padding:15px 0;animation:marquee 24s linear infinite}
+  .strip .track span{font-family:'Fraunces';font-weight:500;font-size:1.05rem;letter-spacing:.04em;color:var(--forest);display:inline-flex;align-items:center;gap:50px}
+  .strip .track span::after{content:"✦";color:var(--forest-2);font-size:.7rem}
+  @keyframes marquee{to{transform:translateX(-50%)}}
+
+  /* SECTION base */
+  section.block{padding:clamp(80px,12vw,150px) 0;position:relative}
+  .on-cream{background:var(--cream);color:var(--ink)}
+  .on-cream .eyebrow,.on-cream .num{color:var(--gold-deep)}
+  .on-cream .eyebrow::before{background:var(--gold-deep)}
+  .reveal{opacity:0;transform:translateY(34px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+  .sec-head{max-width:720px;margin-bottom:62px}
+  .sec-head h2{font-size:clamp(2.6rem,6vw,4.6rem);margin:.2em 0 .32em;font-weight:600}
+  .sec-head p{opacity:.72;font-size:1.05rem;max-width:560px}
+
+  /* ABOUT */
+  .about{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
+  .about h2{font-size:clamp(2.4rem,5vw,3.8rem);font-weight:600}
+  .about .quote{font-family:'Fraunces';font-style:italic;font-weight:500;font-size:1.7rem;color:var(--gold-deep);line-height:1.35;margin:.3em 0 .9em}
+  .about p.body{opacity:.82;margin-bottom:1.1em}
+  .about .emblem{position:relative;aspect-ratio:1;max-width:420px;margin:0 auto;width:100%;
+    display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(163,126,48,.4);border-radius:3px}
+  .about .emblem::before{content:"";position:absolute;inset:16px;border:1px solid rgba(163,126,48,.28)}
+  .about .emblem .big{font-family:'Fraunces';font-weight:600;font-size:clamp(5rem,14vw,9rem);color:var(--gold-deep);line-height:.9;text-align:center}
+  .about .emblem .sub{position:absolute;bottom:13%;font-size:.64rem;letter-spacing:.4em;text-transform:uppercase;color:var(--ink);opacity:.6}
+  .about .emblem .corner{position:absolute;width:16px;height:16px;border:2px solid var(--gold)}
+  .about .emblem .c1{top:-2px;left:-2px;border-right:0;border-bottom:0}
+  .about .emblem .c2{top:-2px;right:-2px;border-left:0;border-bottom:0}
+  .about .emblem .c3{bottom:-2px;left:-2px;border-right:0;border-top:0}
+  .about .emblem .c4{bottom:-2px;right:-2px;border-left:0;border-top:0}
+
+  /* EXPERIENCE */
+  .exp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(248px,1fr));gap:20px}
+  .exp-card{background:var(--forest-2);border:1px solid rgba(200,162,79,.2);border-radius:4px;
+    transition:.5s var(--ease);position:relative;overflow:hidden;display:flex;flex-direction:column}
+  .exp-card .exp-img{position:relative;aspect-ratio:3/2;overflow:hidden}
+  .exp-card .exp-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    filter:saturate(.92) brightness(.82);transition:.7s var(--ease)}
+  .exp-card .exp-img::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(10,34,22,.1) 40%,rgba(12,42,28,.9));pointer-events:none}
+  .exp-card .num{position:absolute;top:14px;left:16px;z-index:2;margin:0;
+    font-size:1.4rem;text-shadow:0 2px 10px rgba(0,0,0,.5)}
+  .exp-card .body{padding:26px 28px 32px}
+  .exp-card::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:0;background:var(--gold);transition:.5s var(--ease)}
+  .exp-card:hover{transform:translateY(-6px);border-color:rgba(200,162,79,.55)}
+  .exp-card:hover .exp-img img{filter:saturate(1) brightness(.95);transform:scale(1.05)}
+  .exp-card:hover::after{width:100%}
+  .exp-card h3{font-size:1.6rem;margin-bottom:.4em;font-weight:600}
+  .exp-card p{opacity:.7;font-size:.93rem}
+
+  /* MENU */
+  .menu-wrap{display:grid;grid-template-columns:1fr 1fr;gap:10px 70px}
+  .menu-col h3{font-family:'Fraunces';font-weight:600;font-size:1.5rem;color:var(--gold-deep);
+    padding-bottom:16px;margin-bottom:6px;border-bottom:2px solid rgba(163,126,48,.35);display:flex;align-items:baseline;gap:.6em}
+  .menu-col h3 small{font-family:'Jost';font-weight:400;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;opacity:.5}
+  .menu-item{display:flex;align-items:baseline;gap:12px;padding:16px 0;border-bottom:1px solid rgba(11,31,21,.1)}
+  .menu-item .n{font-family:'Fraunces';font-weight:500;font-size:1.22rem}
+  .menu-item .dots{flex:1;border-bottom:1px dotted rgba(11,31,21,.3);transform:translateY(-4px)}
+  .menu-item .p{color:var(--gold-deep);font-weight:500;white-space:nowrap}
+  .menu-note{margin-top:28px;font-size:.8rem;opacity:.55;font-style:italic}
+
+  /* GALLERY */
+  .gallery{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:168px;gap:12px}
+  .gallery .tile{position:relative;border-radius:3px;overflow:hidden;border:1px solid rgba(200,162,79,.25)}
+  .gallery .tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    filter:saturate(.95) brightness(.92);transition:.7s var(--ease)}
+  .gallery .tile:hover img{filter:none;transform:scale(1.05)}
+  .gallery .tile::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(10,34,22,.82));pointer-events:none}
+  .gallery .tile .cap{position:absolute;left:15px;bottom:13px;z-index:2;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cream)}
+  .gallery .tile .cap b{display:block;font-family:'Fraunces';font-weight:500;font-style:italic;font-size:1.05rem;letter-spacing:0;text-transform:none;color:var(--gold-soft)}
+  .g-wide{grid-column:span 2}
+  .g-tall{grid-row:span 2}
+  .g-big{grid-column:span 2;grid-row:span 2}
+
+  /* VISIT */
+  .visit{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:stretch}
+  .info-row{display:flex;gap:18px;padding:24px 0;border-bottom:1px solid rgba(11,31,21,.12)}
+  .info-row .num{min-width:34px}
+  .info-row h4{font-weight:600;letter-spacing:.14em;text-transform:uppercase;font-size:.72rem;opacity:.55;margin-bottom:5px}
+  .info-row p{font-size:1.05rem}
+  .info-row a{color:var(--gold-deep);font-weight:400}
+  .reserve-card{background:var(--forest);color:var(--cream);border-radius:3px;padding:52px 46px;
+    display:flex;flex-direction:column;justify-content:center;gap:8px;position:relative;overflow:hidden}
+  .reserve-card::before{content:"";position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;border:1.5px solid rgba(200,162,79,.3)}
+  .reserve-card h3{font-size:2.5rem;font-weight:600}
+  .reserve-card p{opacity:.72;margin-bottom:14px}
+  .reserve-card .phone{font-family:'Fraunces';font-weight:500;font-size:2rem;color:var(--gold-soft)}
+  .reserve-card .btn{margin-top:22px;align-self:flex-start}
+
+  /* FOOTER */
+  footer{background:var(--forest-3);padding:76px 0 42px;text-align:center;border-top:1px solid rgba(200,162,79,.2)}
+  footer .brand{font-size:2.1rem;display:inline-block;margin-bottom:12px}
+  footer .tagline{opacity:.55;letter-spacing:.2em;text-transform:uppercase;font-size:.72rem}
+  footer .socials{display:flex;gap:22px;justify-content:center;margin:26px 0}
+  footer .socials a{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;opacity:.7;transition:.3s}
+  footer .socials a:hover{color:var(--gold-soft);opacity:1}
+  footer .fine{opacity:.4;font-size:.76rem;margin-top:22px;line-height:2}
+
+  @media(max-width:900px){
+    .hero .grid{grid-template-columns:1fr;gap:10px}
+    .monogram{max-width:300px;margin:30px auto 0}
+    .about,.menu-wrap,.visit{grid-template-columns:1fr;gap:44px}
+    .about .emblem{order:-1;max-width:320px}
+  }
+  @media(max-width:860px){
+    nav.links{position:fixed;inset:0 0 0 auto;width:min(80vw,320px);flex-direction:column;justify-content:center;
+      background:rgba(10,34,22,.98);backdrop-filter:blur(14px);transform:translateX(100%);transition:.5s var(--ease);
+      gap:30px;border-left:1px solid rgba(200,162,79,.3)}
+    nav.links.open{transform:none}
+    .menu-toggle{display:block;z-index:70}
+  }
+  @media(max-width:640px){
+    .gallery{grid-template-columns:repeat(2,1fr);grid-auto-rows:150px}
+    .g-big{grid-column:span 2;grid-row:span 1}
+    .g-wide{grid-column:span 2}
+    .g-tall{grid-row:span 1}
+  }
+  @media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="brand">Kan<b>zel</b></div>
+  <nav class="links" id="links">
+    <a href="#about">Vision</a>
+    <a href="#experience">Experience</a>
+    <a href="#menu">Menu</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#visit">Visit</a>
+    <a href="#visit" class="btn">Reserve</a>
+  </nav>
+  <button class="menu-toggle" id="toggle" aria-label="Menu">☰</button>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg" aria-hidden="true">
+    <div class="photo"></div>
+    <div class="scrim"></div>
+  </div>
+  <div class="wrap grid">
+    <div>
+      <span class="eyebrow">Le Lac du Caire · Cairo</span>
+      <h1>Kanzel<em>Restaurant &amp; Lounge</em></h1>
+      <p class="lead">Not just a venue — a vision. Sculpted design, soft textures and lakefront elegance in one seamless escape.</p>
+      <div class="cta">
+        <a href="#visit" class="btn">Reserve a Table</a>
+        <a href="#menu" class="btn ghost">Explore the Menu</a>
+      </div>
+    </div>
+    <div class="monogram">
+      <div class="ring r1"></div>
+      <div class="ring r3"></div>
+      <div class="ring r2"></div>
+      <div class="dot"></div>
+      <div class="lockup">
+        <div class="mono">K</div>
+        <div class="wordmark">KANZEL</div>
+        <div class="rule"></div>
+        <div class="sub">Restaurant &amp; Lounge</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GOLD STRIP -->
+<div class="strip" aria-hidden="true">
+  <div class="track">
+    <span>Lakefront Dining<span></span></span><span>Shisha &amp; Lounge<span></span></span>
+    <span>Private Events<span></span></span><span>Nightly Ambience<span></span></span>
+    <span>Lakefront Dining<span></span></span><span>Shisha &amp; Lounge<span></span></span>
+    <span>Private Events<span></span></span><span>Nightly Ambience<span></span></span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="block on-cream" id="about">
+  <div class="wrap about">
+    <div class="reveal">
+      <span class="eyebrow">The Vision</span>
+      <h2>An escape sculpted by the water.</h2>
+      <p class="quote">"Every curve, every seat, every view is part of the story."</p>
+      <p class="body">Set on the shores of Le Lac du Caire, Kanzel blends warm natural textures, soft lighting and open lakefront views into a setting made for long evenings — a quiet dinner, a gathering with friends, or a celebration worth remembering.</p>
+      <p class="body">The space shifts gracefully from golden afternoons to glowing nights: relaxed and sunlit by day, intimate and atmospheric after dark.</p>
+      <a href="#visit" class="btn dark" style="margin-top:10px">Plan Your Visit</a>
+    </div>
+    <div class="emblem reveal" aria-hidden="true">
+      <span class="corner c1"></span><span class="corner c2"></span>
+      <span class="corner c3"></span><span class="corner c4"></span>
+      <div class="big">K</div>
+      <div class="sub">Restaurant &amp; Lounge</div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="block" id="experience">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">The Experience</span>
+      <h2>More than a meal</h2>
+      <p>Four ways to settle in by the lake.</p>
+    </div>
+    <div class="exp-grid">
+      <div class="exp-card reveal">
+        <div class="exp-img"><span class="num">01</span><img src="images/exp-dining.jpg" alt="Elegant lakefront dining room" loading="lazy"></div>
+        <div class="body"><h3>Lakefront Dining</h3><p>A seasonal menu served with the water in view — from unhurried lunches to candlelit dinners.</p></div>
+      </div>
+      <div class="exp-card reveal">
+        <div class="exp-img"><span class="num">02</span><img src="images/exp-lounge.jpg" alt="Intimate lounge seating" loading="lazy"></div>
+        <div class="body"><h3>The Lounge</h3><p>Soft seating, warm textures and signature shisha for slow, easy evenings under open skies.</p></div>
+      </div>
+      <div class="exp-card reveal">
+        <div class="exp-img"><span class="num">03</span><img src="images/exp-nights.jpg" alt="Atmospheric lighting after dark" loading="lazy"></div>
+        <div class="body"><h3>Nights at Kanzel</h3><p>Ambient sound and a glowing lakefront that turns every night into an occasion.</p></div>
+      </div>
+      <div class="exp-card reveal">
+        <div class="exp-img"><span class="num">04</span><img src="images/exp-events.jpg" alt="Guests gathering for a celebration" loading="lazy"></div>
+        <div class="body"><h3>Private Events</h3><p>Birthdays, gatherings and celebrations hosted in a setting designed to be remembered.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="block on-cream" id="menu">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">A Taste of Kanzel</span>
+      <h2>Menu highlights</h2>
+      <p>A sample of the table — a full menu can be built from your real dishes and pricing.</p>
+    </div>
+    <div class="menu-wrap">
+      <div class="menu-col reveal">
+        <h3>To Begin &amp; Mains <small>Kitchen</small></h3>
+        <div class="menu-item"><span class="n">Lakeside Mezze Platter</span><span class="dots"></span><span class="p">EGP 240</span></div>
+        <div class="menu-item"><span class="n">Grilled Seabass</span><span class="dots"></span><span class="p">EGP 395</span></div>
+        <div class="menu-item"><span class="n">Mixed Oriental Grill</span><span class="dots"></span><span class="p">EGP 420</span></div>
+        <div class="menu-item"><span class="n">Truffle Beef Pasta</span><span class="dots"></span><span class="p">EGP 310</span></div>
+        <div class="menu-item"><span class="n">Kanzel Signature Burger</span><span class="dots"></span><span class="p">EGP 260</span></div>
+      </div>
+      <div class="menu-col reveal">
+        <h3>Lounge &amp; Sips <small>Bar</small></h3>
+        <div class="menu-item"><span class="n">Premium Shisha</span><span class="dots"></span><span class="p">EGP 180</span></div>
+        <div class="menu-item"><span class="n">Fresh Lakeview Mojito</span><span class="dots"></span><span class="p">EGP 120</span></div>
+        <div class="menu-item"><span class="n">Spanish Latte</span><span class="dots"></span><span class="p">EGP 95</span></div>
+        <div class="menu-item"><span class="n">Signature Mocktails</span><span class="dots"></span><span class="p">EGP 130</span></div>
+        <div class="menu-item"><span class="n">Kanzel Dessert Selection</span><span class="dots"></span><span class="p">EGP 150</span></div>
+      </div>
+    </div>
+    <p class="menu-note">Dishes and prices shown are placeholders for this concept demo — ready to be swapped for Kanzel's real menu.</p>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="block" id="gallery">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">The Setting</span>
+      <h2>Moments by the lake</h2>
+      <p>Golden afternoons, glowing nights and the water at every table.</p>
+    </div>
+    <div class="gallery reveal">
+      <div class="tile g-big"><img src="images/gal-big.jpg" alt="Moody upscale lounge interior" loading="lazy"><span class="cap">Interiors · <b>After Dark</b></span></div>
+      <div class="tile"><img src="images/gal-plate1.jpg" alt="Signature plated main course" loading="lazy"><span class="cap"><b>Signature Plates</b></span></div>
+      <div class="tile"><img src="images/gal-shisha.jpg" alt="Premium shisha in the lounge" loading="lazy"><span class="cap"><b>Shisha Nights</b></span></div>
+      <div class="tile g-wide"><img src="images/gal-view.jpg" alt="Lounge seating with an open view" loading="lazy"><span class="cap">Evening · <b>Lakeside Views</b></span></div>
+      <div class="tile"><img src="images/gal-plate2.jpg" alt="Fine dining main dish" loading="lazy"><span class="cap"><b>From the Grill</b></span></div>
+      <div class="tile"><img src="images/gal-reserved.jpg" alt="Reserved marble table setting" loading="lazy"><span class="cap"><b>Reserved for You</b></span></div>
+      <div class="tile"><img src="images/gal-plate3.jpg" alt="Elegant plated seafood" loading="lazy"><span class="cap"><b>Fine Plating</b></span></div>
+      <div class="tile"><img src="images/gal-table.jpg" alt="Refined table of dishes" loading="lazy"><span class="cap"><b>The Table</b></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- VISIT -->
+<section class="block on-cream" id="visit">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Find Us</span>
+      <h2>Visit &amp; reserve</h2>
+    </div>
+    <div class="visit">
+      <div class="reveal">
+        <div class="info-row"><span class="num">01</span><div><h4>Location</h4><p>Gate 1, Al Fustat St · Le Lac du Caire<br>El Khalifa, Cairo Governorate</p></div></div>
+        <div class="info-row"><span class="num">02</span><div><h4>Hours</h4><p>Open daily · 10:00 AM – 02:00 AM</p></div></div>
+        <div class="info-row"><span class="num">03</span><div><h4>Reservations</h4><p><a href="tel:+201040311118">0104 031 1118</a> &nbsp;·&nbsp; <a href="tel:+201040311119">0104 031 1119</a></p></div></div>
+        <div class="info-row"><span class="num">04</span><div><h4>Directions</h4><p><a href="https://www.google.com/maps/search/Kanzel+Restaurant+Lounge+Le+Lac+du+Caire" target="_blank" rel="noopener">Open in Google Maps →</a></p></div></div>
+      </div>
+      <div class="reserve-card reveal">
+        <span class="eyebrow" style="color:var(--gold-soft)">Book Your Evening</span>
+        <h3>Reserve a table</h3>
+        <p>Call ahead to secure lakefront seating, lounge space or a private event.</p>
+        <div class="phone">0104 031 1118</div>
+        <a href="tel:+201040311118" class="btn">Call to Reserve</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="brand">Kan<b>zel</b></div>
+    <p class="tagline">Restaurant &amp; Lounge · Le Lac du Caire</p>
+    <div class="socials">
+      <a href="https://www.instagram.com/kanzel.lounge/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.facebook.com/p/Kanzel-Restaurant-61571087039555/" target="_blank" rel="noopener">Facebook</a>
+      <a href="https://www.tiktok.com/@kanzel.lounge" target="_blank" rel="noopener">TikTok</a>
+      <a href="tel:+201040311118">Call</a>
+    </div>
+    <p class="fine">© <span id="yr"></span> Kanzel Restaurant &amp; Lounge. All rights reserved.<br>Concept website demo — not the official site.</p>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40));
+  const toggle = document.getElementById('toggle');
+  const links = document.getElementById('links');
+  toggle.addEventListener('click', () => links.classList.toggle('open'));
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+  const io = new IntersectionObserver((es) => {
+    es.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  document.getElementById('yr').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
